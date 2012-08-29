@@ -1,1 +1,1 @@
-@media screen{div{color:green}.foo{background:red}a{color:green}.bar{background:yellow}}
+@media screen{div,a{color:green}.foo{background:red}.bar{background:yellow}}
