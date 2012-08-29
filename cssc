@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+var compress = require('./lib/compress').compress;
+
+var input;
+if (process.argv.length === 2) {
+  var input = '';
+  process.stdin.resume();
+  process.stdin.on('data', function (chunk) { input += chunk; });
+  process.stdin.on('end', function () { console.log(compress(input)); });
+} else {
+  fs = require('fs');
+  input = fs.readFileSync(process.argv[2], 'utf-8');
+  console.log(compress(input));
+}
