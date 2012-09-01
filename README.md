@@ -1,15 +1,9 @@
-Todo:
-#### Options
+CssCompress
+===========
 
-   --no-definition-consolidation
-   --no-selector-consolidation
+Yes.
 
-#### Selector consolidation
+### Options
 
-    <= div { color: red } div { text-align: right }
-    => div{color: red;text-align: right}
-
-#### Duplicate properties
-
-    <= div { color: red; color: blue ;}
-    => div{color: blue}
+    --no-definition-consolidation
+    --no-selector-consolidation
