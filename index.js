@@ -234,7 +234,7 @@ Transformer.prototype.declaration = function(declaration) {
 
   // Compress each of the values if possible
   values = values.map(function(identifier) {
-    return self.identifier(identifier);
+    return self.identifier(identifier, declaration.property);
   });
 
   if (declaration.property === 'font-family') {
@@ -254,10 +254,13 @@ Transformer.prototype.declaration = function(declaration) {
 // Compresses a given identifier.
 // Returns a string.
 
-Transformer.prototype.identifier = function(identifier) {
+Transformer.prototype.identifier = function(identifier, property) {
   var m;
   //- Compress `none` to `0`.
-  if (identifier === 'none') {
+  if ((identifier === 'none') &&
+      ((property === 'background') ||
+       (property === 'border') ||
+       (property === 'outline'))) {
     return "0";
   }
 
