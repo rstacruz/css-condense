@@ -1,7 +1,7 @@
 LIDOC ?= lidoc
 
 docs: \
-	lib/compress.js
+	index.js
 	$(LIDOC) $^ -o $@
 
 test: test/*.in.css

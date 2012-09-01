@@ -9,7 +9,7 @@ Usage
 
 Or via NodeJS:
 
-    require('css_crunch').compress("div {color: red}")
+    require('css-crunch').compress("div {color: red}")
 
 What it does
 ------------

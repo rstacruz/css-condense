@@ -1,6 +1,6 @@
 var fs = require('fs');
 var files = process.argv.slice(2);
-var compress = require('lib/css_crunch').compress;
+var compress = require('index').compress;
 
 var failed = 0;
 
