@@ -212,6 +212,7 @@ Transformer.prototype.styleRule = function(rule, context, i) {
 */
 Transformer.prototype.declaration = function(declaration) {
   var self = this;
+  var val;
 
   // Split the values according to quotes, etc.
   var values = valueSplit(declaration.property, declaration.value);
@@ -222,10 +223,14 @@ Transformer.prototype.declaration = function(declaration) {
   });
 
   if (declaration.property === 'font-family') {
-    declaration.value = values.join(',');
+    val = values.join(',');
   } else {
-    declaration.value = values.join(' ');
+    val = values.join(' ');
   }
+
+  // Strip whitespace on important
+  val = val.replace(/\s*!important$/, '!important');
+  declaration.value = val;
 
   return declaration;
 };
