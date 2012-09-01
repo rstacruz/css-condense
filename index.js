@@ -300,7 +300,7 @@ function valueSplit(prop, values) {
   if (prop === 'font-family') {
     re = values.split(',')
   } else {
-    re = values.match(/"[^"]+"|'[^']+'|[^ ]+/g);
+    re = values.match(/"(?:\\"|.)*?"|'(?:\\'|.)*?'|[^ ]+/g);
   }
 
   //- Trim out surrounding whitespace.

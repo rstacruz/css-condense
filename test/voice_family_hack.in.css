@@ -1,0 +1,6 @@
+#elem {
+    width: 100px; /* IE */
+    voice-family: "\"}\"";
+    voice-family: '\'}\'';
+    voice-family:inherit;
+}
