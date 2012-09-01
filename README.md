@@ -156,6 +156,14 @@ div{color:blue}
 However, it indeed isn't perfectly safe: if you have a `max-height` rule on the
 regular `.box`, you're gonna have a bad time.
 
+How's the real-world performance?
+---------------------------------
+
+I ran it through some real-world CSS files that have already been compressed,
+and usually get around 5% more compression out of it.
+
+Example: https://gist.github.com/3583505
+
 Options
 -------
 
