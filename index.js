@@ -125,6 +125,10 @@ function compress(str, options) {
   //
   // This accounts for IE hacks *[1]* to make sure that they're after the
   // declarations it hacks. eg, it will ensure the order of `border: 0; *border: 0;`.
+  //
+  // Also, this will preserve the order of declarations with the same property.
+  // For instance, `background: -moz-linear-gradient(); background:
+  // -linear-gradient()` will have its order preserved.
 
   function sortDeclarations(declarations) {
     if (declarations.length <= 1) return declarations;
@@ -133,7 +137,7 @@ function compress(str, options) {
       decl.index = i;
     });
 
-    var out = declarations.sort(function(a, b) {
+    return declarations.sort(function(a, b) {
       function toIndex(decl) {
         var prop = decl.property;
 
@@ -142,11 +146,11 @@ function compress(str, options) {
           prop = prop.substr(1);
         }
 
-        return prop + (1000+decl.index);
+        return prop + (1000+decl.index); /* [2] */
       }
+
       return toIndex(a) > toIndex(b) ? 1 : -1;
     });
-    return out;
   };
 
   // ### consolidateViaDeclarations
