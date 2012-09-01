@@ -213,12 +213,28 @@ and usually get around 5% to 25% more compression out of it.
 
 Example: https://gist.github.com/3583505
 
-Options
--------
+Acknowledgements
+----------------
 
-Okay these aren't implemented yet, but they'll be:
+Special thanks to [TJ Holowaychuk] for
+[css-parse] which this project uses to parse CSS, and [css-stringify] which is
+used to build the final output.
 
-    --no-consolidate-via-definition
-    --no-consolidate-via-selector
-    --no-consolidate-media-queries
-    --conservative-consolidation
+[TJ Holowaychuk]: https://github.com/visionmedia
+[css-parse]: https://github.com/visionmedia/node-css-parse
+[css-stringify]: https://github.com/visionmedia/node-css-stringify
+
+© 2012, Rico Sta. Cruz. Released under the [MIT 
+License](http://www.opensource.org/licenses/mit-license.php).
+
+**css-condense** is authored and maintained by [Rico Sta. Cruz][rsc] with help 
+from its [contributors][c]. It is sponsored by my startup, [Nadarei, Inc][nd].
+
+ * [My website](http://ricostacruz.com) (ricostacruz.com)
+ * [Nadarei, Inc.](http://nadarei.co) (nadarei.co)
+ * [Github](http://github.com/rstacruz) (@rstacruz)
+ * [Twitter](http://twitter.com/rstacruz) (@rstacruz)
+
+[rsc]: http://ricostacruz.com
+[c]:   http://github.com/rstacruz/lidoc/contributors
+[nd]:  http://nadarei.co
