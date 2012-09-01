@@ -1,7 +1,15 @@
-CssCompress
-===========
+# css_crunch
 
-Compresses dangerously.
+Compresses CSS, and isn't conservative about it.
+
+Usage
+----
+
+    $ cssc file.css > file.min.css
+
+Or via NodeJS:
+
+    require('css_crunch').compress("div {color: red}")
 
 What it does
 ------------
