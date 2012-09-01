@@ -123,8 +123,9 @@ function compress(str, options) {
   // ### sortDeclarations
   // Sorts a given list of declarations.
   //
-  // This accounts for IE hacks *[1]* to make sure that they're after the
-  // declarations it hacks. eg, it will ensure the order of `border: 0; *border: 0;`.
+  // This accounts for IE hacks and vendor prefixes *[1]* to make sure that
+  // they're after the declarations it hacks. eg, it will ensure the order of
+  // `border: 0; *border: 0;`.
   //
   // Also, this will preserve the order of declarations with the same property.
   // For instance, `background: -moz-linear-gradient(); background:
@@ -141,9 +142,8 @@ function compress(str, options) {
       function toIndex(decl) {
         var prop = decl.property;
 
-        var hackPrefix = prop.charAt(0); /* [1] */
-        if ((hackPrefix === '_') || (hackPrefix === '*')) {
-          prop = prop.substr(1);
+        if (m = prop.match(/^(\-[a-z]+\-|\*|_)(.*)$/)) { /* [1] */
+          prop = m[2];
         }
 
         return prop + "Z" + (1000+decl.index); /* [2] */
