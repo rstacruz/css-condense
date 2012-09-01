@@ -4,7 +4,7 @@ docs: \
 	index.js
 	$(LIDOC) $^ -o $@
 
-test: test/*.in.css
+test: test/cases/*.in.css
 	node test/test.js $^
 
 .PHONY: test
