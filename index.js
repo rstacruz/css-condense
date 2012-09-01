@@ -264,6 +264,11 @@ Transformer.prototype.identifier = function(identifier, property) {
     return "0";
   }
 
+  //- Remove quotes from urls.
+  if (m = identifier.match(/^url\(["'](.*?)["']\)$/)) {
+    return "url(" + m[1] + ")";
+  }
+
   //- Compress `0px` to `0`.
   if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(em|px|%|in|cm|pt)$/)) {
     var num = m[1];
