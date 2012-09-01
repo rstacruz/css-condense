@@ -147,8 +147,8 @@ But you'll risk breaking things!
 Well, yes. You want a safe approach? Go with [YUI 
 Compressor](http://developer.yahoo.com/yui/compressor/).
 
-But hey, css-condense tries its best to make assumptions to ensure no
-(or the least amount of) breakage.
+But hey, css-condense tries its best to make assumptions to ensure that no
+breakage (or at least minimal breakage) will happen.
 
 For instance, consolidating media queries can go wrong in this case:
 
