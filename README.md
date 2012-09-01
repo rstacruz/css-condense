@@ -144,7 +144,7 @@ Becomes:
 But you'll risk breaking things!
 --------------------------------
 
-Well, yes. You want safe? Go with [YUI 
+Well, yes. You want a safe approach? Go with [YUI 
 Compressor](http://developer.yahoo.com/yui/compressor/).
 
 But hey, css-condense tries its best to make assumptions to ensure no
