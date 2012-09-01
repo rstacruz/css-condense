@@ -1,5 +1,3 @@
-# css-condense
-
 Compresses CSS, and isn't conservative about it.
 
 Usage
@@ -80,8 +78,9 @@ div{color:blue;cursor:pointer}
 
 #### Consolidation via definitions
 
-Rules with same definitions will be consolidated too. Great if you use `@extend`
-in your favorite CSS preprocessor across many files.
+Rules with same definitions will be consolidated too. Great if you use
+mixins in your favorite CSS preprocessor mercilessly. (Those clearfixes will
+totally add up like crazy)
 
 ``` css
 div { color: blue; }
@@ -113,15 +112,13 @@ Becomes:
 @media screen and (min-width:780px){div{width:100%}p{width:50%}}
 ```
 
-Objections
-----------
+But you'll risk breaking things!
+--------------------------------
 
-#### That's dangerous! You run the risk of things breaking!
-
-True. You want safe? Go with [YUI 
+Well, yes. You want safe? Go with [YUI 
 Compressor](http://developer.yahoo.com/yui/compressor/).
 
-But css-condense tries its best to make assumptions to ensure no
+But hey, css-condense tries its best to make assumptions to ensure no
 (or the least amount of) breakage.
 
 For instance, consolidating media queries can go wrong in this case:
@@ -145,11 +142,22 @@ The two media queries have the same query, and will be subject to consolidation.
 However, if the `[3]` is to be consolidated into `[1]`, you will not get the
 effect you want.
 
-The assumption is that media queries are usually used to override "normal"
-rules, so in cases like these, consolidated things placed at its last
-appearance:
+``` css
+/* Bad :( */
+@media screen and (max-width:480px){.box{max-height:10px;padding:10px}}
+.box{padding:20px}
+div{color:blue}
+```
+
+`.box`'s padding is supposed to be overridden to `10px`, which in this case,
+doesn't happen anymore.
+
+css-condense then makes the assumption is that media queries are usually used to
+override "normal" rules. The effect is that in cases like these, consolidated
+rels are placed at its last appearance:
 
 ``` css
+/* Good -- css-condense does things this way! */
 .box{padding:20px}
 @media screen and (max-width:480px){.box{max-height:10px;padding:10px}}
 div{color:blue}
@@ -158,11 +166,47 @@ div{color:blue}
 However, it indeed isn't perfectly safe: if you have a `max-height` rule on the
 regular `.box`, you're gonna have a bad time.
 
+What about with CSS rules?
+--------------------------
+
+css-condense also goes by the assumption that most people put their least
+specific things on top (like resets).
+
+``` css
+body, div, h1, p { margin: 0; padding: 0; }
+.listing h1 { padding: 10px; }
+.item h1 { margin: 0; padding: 0; }
+```
+
+Now if `.item` is inside `.listing`, all of these rules affect `.listing h1`.
+The final effect is that the `h1` will have a padding of `0`.
+
+If the consolidation puts things on top, `h1` will get a padding of `10px`. Not
+good.
+
+``` css
+/* Bad :( */
+body,div,h1,p,.item h1 { margin: 0; padding: 0; }
+.listing h1 { padding: 10px; }
+```
+
+...which is why css-condense assumes that the more specific things are usually
+at the bottom. This then compresses nicely to:
+
+``` css
+/* Good -- css-condense knows what's good for you. */
+.listing h1 { padding: 10px; }
+body,div,h1,p,.item h1 { margin: 0; padding: 0; }
+```
+
+...giving your H1 the right padding: `0`.
+
+
 How's the real-world performance?
 ---------------------------------
 
 I ran it through some real-world CSS files that have already been compressed,
-and usually get around 5% more compression out of it.
+and usually get around 5% to 10% more compression out of it.
 
 Example: https://gist.github.com/3583505
 
