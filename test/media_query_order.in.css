@@ -1,0 +1,3 @@
+@media screen { div { color: blue; } }
+p { color: black; }
+@media screen { p { color: green; } }

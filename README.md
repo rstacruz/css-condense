@@ -1,7 +1,7 @@
 CssCompress
 ===========
 
-Yes.
+Compresses dangerously.
 
 What it does
 ------------
@@ -41,6 +41,9 @@ Can be:
 ``` css
 div{color:#f00}span{margin:0!important}p{font-family: Lucida Grande,sans-serif}
 ```
+
+The dangerous things it does
+----------------------------
 
 But that's not all! Here's where things get exciting!
 
