@@ -146,7 +146,7 @@ function compress(str, options) {
           prop = prop.substr(1);
         }
 
-        return prop + (1000+decl.index); /* [2] */
+        return prop + "Z" + (1000+decl.index); /* [2] */
       }
 
       return toIndex(a) > toIndex(b) ? 1 : -1;
