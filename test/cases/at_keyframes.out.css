@@ -1,1 +1,1 @@
-@keyframes foo{0%{opacity:0;color:#f00}100%{opacity:1;color:#f0f}}
+@keyframes foo{0%{color:#f00;opacity:0}100%{color:#f0f;opacity:1}}

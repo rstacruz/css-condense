@@ -120,6 +120,24 @@ function compress(str, options) {
     return tree;
   }
 
+  // ### sortDeclarations
+  // Sorts a given list of declarations.
+
+  function sortDeclarations(declarations) {
+    if (declarations.length <= 1) return declarations;
+
+    declarations.forEach(function(decl, i) {
+      decl.index = i;
+    });
+
+    var out = declarations.sort(function(a, b) {
+      var _a = a.property + (1000+a.index);
+      var _b = b.property + (1000+b.index);
+      return _a > _b ? 1 : -1;
+    });
+    return out;
+  };
+
   // ### consolidateViaDeclarations
   // Consolidate rules with same definitions.
   //
@@ -136,6 +154,7 @@ function compress(str, options) {
 
   function consolidateViaSelectors(rule, context, i, cache) {
     consolidate('declarations', 'selectors', 'last', rule, context, i, cache);
+    rule.declarations = sortDeclarations(rule.declarations);
   };
 
   // ### consolidateMediaQueries
@@ -203,6 +222,9 @@ function compress(str, options) {
     if (typeof rule.selectors !== 'undefined') {
       rule.selectors = rule.selectors.map(compressSelector).sort();
     }
+
+    //- Sort declarations.
+    rule.declarations = sortDeclarations(rule.declarations);
 
     //- Compress its declarations.
     rule.declarations.forEach(function(declaration) {
