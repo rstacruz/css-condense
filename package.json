@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "css-parse": ">= 1.0.2",
-    "css-stringify": ">= 1.0.1"
+    "css-stringify": ">= 1.0.2"
   },
   "scripts": {
     "test": "make test"
