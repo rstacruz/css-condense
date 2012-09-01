@@ -1,0 +1,10 @@
+@keyframes foo {
+  0% {
+    opacity: 0;
+    color: #ff0000;
+  }
+  100% {
+    opacity: 1;
+    color: #ff00ff;
+  }
+}

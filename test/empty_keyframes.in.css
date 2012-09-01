@@ -1,0 +1,10 @@
+@keyframes shift {
+  0% {
+    color: blue;
+  }
+  50% {
+  }
+  100% {
+    color: red;
+  }
+}
