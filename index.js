@@ -332,7 +332,7 @@ function compress(str, options) {
     var re = selector;
 
     re = re.replace(/\s+/, ' ');
-    re = re.replace(/ ?([\+>]) ?/, '$1');
+    re = re.replace(/ ?([\+>~]) ?/, '$1');
 
     return re;
 
