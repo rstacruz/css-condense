@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var compress = require('../lib/compress').compress;
+var compress = require('../lib/css_crunch').compress;
 
 var input;
 if (process.argv.length === 2) {
