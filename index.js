@@ -240,9 +240,24 @@ Transformer.prototype.declaration = function(declaration) {
 // Returns a string.
 
 Transformer.prototype.identifier = function(identifier) {
-  //- Compress `0px` to `0`.
-  if (identifier.match(/^0(\.0*)?(?:em|px|%)$/)) {
+  var m;
+  //- Compress `none` to `0`.
+  if (identifier === 'none') {
     return "0";
+  }
+
+  //- Compress `0px` to `0`.
+  if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(em|px|%|in|cm|pt)$/)) {
+    var num = m[1];
+    var unit = m[2];
+
+    if (num.match(/^0*\.?0*$/)) {
+      return "0";
+    } else {
+      num = num.replace(/^0+/, '');
+      if (num.indexOf('.') > -1) num = num.replace(/0+$/, '');
+      return num + unit;
+    }
   }
 
   //- Compress `#ff2288` to `#f28`. Also, lowercase all hex codes.
