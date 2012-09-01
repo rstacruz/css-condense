@@ -1,0 +1,5 @@
+div {
+  background: -moz-linear-gradient(x);
+  background: -webkit-linear-gradient(x);
+  background: linear-gradient(x);
+}
