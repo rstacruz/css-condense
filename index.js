@@ -7,6 +7,8 @@
 //
 
 function compress(str, options) {
+  var css = { parse: require('css-parse'), stringify: require('css-stringify') };
+
   // Get important comments before stripping.
   var parts = getBangComments(str);
 
@@ -22,7 +24,6 @@ function compress(str, options) {
   str = stripComments(str);
 
   //- Get the AST.
-  var css = require('css');
   var tree = css.parse(str);
 
   //- Transform the AST.

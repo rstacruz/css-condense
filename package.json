@@ -20,7 +20,8 @@
     "url": "https://github.com/rstacruz/css-condense.git"
   },
   "dependencies": {
-    "css": ">= 1.0.1",
+    "css-parse": ">= 1.0.2",
+    "css-stringify": ">= 1.0.1"
   },
   "scripts": {
     "test": "make test"
