@@ -47,7 +47,7 @@ p { font-family: "Lucida Grande", sans-serif; }
 abbr { background: url("tile.jpg") }
 ```
 
-Can be: (added newlines for readability)
+Can be: (newlines added for readability)
 
 ``` css
 div{color:#f00}
@@ -129,21 +129,21 @@ For instance, consolidating media queries can go wrong in this case:
 ``` css
 /* Restrict height on phones */
 @media screen and (max-width: 480px) {
-  .box { max-height: 10px; }
+  .box { max-height: 10px; } /* [1] */
 }
 .box {
-  padding: 20px;
+  padding: 20px; /* [2] */
 }
 /* Small screens = less spacing */
 @media screen and (max-width: 480px) {
-  .box { padding: 10px; }
+  .box { padding: 10px; } /* [3] */
 }
 div { color: blue; }
 ```
 
 The two media queries have the same query, and will be subject to consolidation.
-However, if the `padding: 10px` rule is consolidated to the `max-height` rule,
-You will not get the effecty ou want.
+However, if the `[3]` is to be consolidated into `[1]`, you will not get the
+effect you want.
 
 The assumption is that media queries are usually used to override "normal"
 rules, so in cases like these, consolidated things placed at its last
