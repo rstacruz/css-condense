@@ -60,7 +60,7 @@ Transformer.prototype.context = function(tree) {
   var valueCache = {};
   var selectorCache = {};
 
-  //- __Pass #1__
+  // __Pass #1__
 
   tree.rules.forEach(function(rule, i) {
 
@@ -78,7 +78,7 @@ Transformer.prototype.context = function(tree) {
 
   });
 
-  //- __Pass #2__
+  // __Pass #2__
 
   tree.rules.forEach(function(rule, i) {
 
@@ -88,7 +88,7 @@ Transformer.prototype.context = function(tree) {
     }
   });
 
-  //- __Pass #3__
+  // __Pass #3__
 
   valueCache = {};
   tree.rules.forEach(function(rule, i) {
