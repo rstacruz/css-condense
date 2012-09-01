@@ -1,0 +1,6 @@
+@media screen {
+  div { color: blue; }
+}
+@media screen {
+  span { color: red; }
+}
