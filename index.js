@@ -10,8 +10,16 @@ function compress(str, options) {
   // Get important comments before stripping.
   var parts = getBangComments(str);
 
+  str = parts.code;
+
+  // Crappy way of accounting for the IE5/Mac hack.
+  var i=0;
+  str = str.replace(/\/\*[\s\S]*?\\\*\/([\s\S]+?)\/\*[\s\S]*?\*\//g, function(content) {
+    return '#x'+i+'ie5machack{start:1}' + content + '#x'+(++i)+'ie5machack{end:1}';
+  });
+
   // Strip comments before compressing.
-  str = stripComments(parts.code);
+  str = stripComments(str);
 
   //- Get the AST.
   var css = require('css');
@@ -21,10 +29,16 @@ function compress(str, options) {
   var transformer = new Transformer(options);
   transformer.transform(tree);
 
+  //- Stringify using node-css-stringify.
+  var output = css.stringify(tree, { compress: true });
+
+  //- Heh, replace back the sentinels we made
+  output = output
+    .replace(/\s*#x[0-9]+ie5machack{start:1}\s*/g, '/*\\*/')
+    .replace(/\s*#x[0-9]+ie5machack{end:1}\s*/g, '/**/');
+
   //- Combine the bang comments with the stringified output.
-  var output;
-  output = parts.comments.join("");
-  output += css.stringify(tree, { compress: true });
+  output = parts.comments.join("") + output;
 
   return output;
 }
