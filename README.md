@@ -41,13 +41,19 @@ Some identifiers, like pixel values or colors, can be trimmed to save on space.
 ``` css
 div { color: #ff0000; }
 span { margin: 0px !important; }
+h1 { background: none; }
+a { padding: 0.30em; }
 p { font-family: "Lucida Grande", sans-serif; }
 ```
 
-Can be:
+Can be: (added newlines for readability)
 
 ``` css
-div{color:#f00}span{margin:0!important}p{font-family: Lucida Grande,sans-serif}
+div{color:#f00}
+span{margin:0!important}
+h1{background:0}
+a{padding:.3em}
+p{font-family: Lucida Grande,sans-serif}
 ```
 
 The dangerous things it does
@@ -104,6 +110,51 @@ Becomes:
 ``` css
 @media screen and (min-width:780px){div{width:100%}p{width:50%}}
 ```
+
+Objections
+----------
+
+#### That's dangerous! You run the risk of things breaking!
+
+True. You want safe? Go with [YUI 
+Compressor](http://developer.yahoo.com/yui/compressor/).
+
+But css-condense tries its best to make assumptions to ensure no
+(or the least amount of) breakage.
+
+For instance, consolidating media queries can go wrong in this case:
+
+``` css
+/* Restrict height on phones */
+@media screen and (max-width: 480px) {
+  .box { max-height: 10px; }
+}
+.box {
+  padding: 20px;
+}
+/* Small screens = less spacing */
+@media screen and (max-width: 480px) {
+  .box { padding: 10px; }
+}
+div { color: blue; }
+```
+
+The two media queries have the same query, and will be subject to consolidation.
+However, if the `padding: 10px` rule is consolidated to the `max-height` rule,
+You will not get the effecty ou want.
+
+The assumption is that media queries are usually used to override "normal"
+rules, so in cases like these, consolidated things placed at its last
+appearance:
+
+``` css
+.box{padding:20px}
+@media screen and (max-width:480px){.box{max-height:10px;padding:10px}}
+div{color:blue}
+```
+
+However, it indeed isn't perfectly safe: if you have a `max-height` rule on the
+regular `.box`, you're gonna have a bad time.
 
 Options
 -------
