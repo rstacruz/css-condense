@@ -68,6 +68,23 @@ p{font-family: Lucida Grande,sans-serif}
 abbr{background:url(tile.jpg)}
 ```
 
+#### Selector/declaration sorting
+
+Each rule has its selectors and declarations sorted. This may not seem like it
+will net any effect, but (1) it increases the likelihood that consecutive
+properties will be gzipped, and (2) it will help consolidation (more on that
+later).
+
+``` css
+div, a { z-index: 10; background: green; }
+```
+
+becomes:
+
+``` css
+a,div{background:green;z-index:10}
+```
+
 The dangerous things it does
 ----------------------------
 

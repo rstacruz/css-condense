@@ -122,6 +122,9 @@ function compress(str, options) {
 
   // ### sortDeclarations
   // Sorts a given list of declarations.
+  //
+  // This accounts for IE hacks *[1]* to make sure that they're after the
+  // declarations it hacks. eg, it will ensure the order of `border: 0; *border: 0;`.
 
   function sortDeclarations(declarations) {
     if (declarations.length <= 1) return declarations;
@@ -131,9 +134,17 @@ function compress(str, options) {
     });
 
     var out = declarations.sort(function(a, b) {
-      var _a = a.property + (1000+a.index);
-      var _b = b.property + (1000+b.index);
-      return _a > _b ? 1 : -1;
+      function toIndex(decl) {
+        var prop = decl.property;
+
+        var hackPrefix = prop.charAt(0); /* [1] */
+        if ((hackPrefix === '_') || (hackPrefix === '*')) {
+          prop = prop.substr(1);
+        }
+
+        return prop + (1000+decl.index);
+      }
+      return toIndex(a) > toIndex(b) ? 1 : -1;
     });
     return out;
   };
