@@ -213,7 +213,6 @@ body,div,h1,p,.item h1 { margin: 0; padding: 0; }
 
 ...giving your H1 the right padding: `0`.
 
-
 How's the real-world performance?
 ---------------------------------
 
@@ -221,6 +220,12 @@ I ran it through some real-world CSS files that have already been compressed,
 and usually get around 5% to 25% more compression out of it.
 
 Example: https://gist.github.com/3583505
+
+But gzip will compress that for you anyway!
+-------------------------------------------
+
+Yes, but css-condense will also reduce the number of rules (usually around 10%
+to 40% less rules!), which can hypothetically make page rendering faster :)
 
 Acknowledgements
 ----------------
