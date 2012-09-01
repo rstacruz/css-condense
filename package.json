@@ -1,0 +1,28 @@
+{
+  "name": "css_crunch",
+  "description": "CSS compressor.",
+  "keywords": ["css", "compress", "compression", "minify"],
+  "author": "Rico Sta. Cruz",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "main": "./lib/css_crunch",
+  "bin": {
+    "cssc": "./bin/cssc"
+  },
+  "homepage": "http://github.com/rstacruz/css_crunch",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rstacruz/css_crunch.git"
+  },
+  "dependencies": {
+    "css": ">= 1.0.1",
+  },
+  "scripts": {
+    "test": "make test"
+  }
+}
