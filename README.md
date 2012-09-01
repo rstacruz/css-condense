@@ -3,14 +3,23 @@ css-condense
 
 Compresses CSS, and isn't conservative about it.
 
+Installation
+------------
+
+Install [NodeJS](http://nodejs.org/), and:
+
+    $ npm install -g css-condense
+
 Usage
-----
+-----
 
     $ cssc file.css > file.min.css
 
 Or via NodeJS:
 
-    require('css-condense').compress("div {color: red}")
+``` js
+require('css-condense').compress("div {color: red}")
+```
 
 What it does
 ------------
