@@ -1,3 +1,5 @@
+Sort the damn selectors.
+
 Options
 -------
 
