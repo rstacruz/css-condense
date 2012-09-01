@@ -1,3 +1,6 @@
+css-condense
+============
+
 Compresses CSS, and isn't conservative about it.
 
 Usage
@@ -206,7 +209,7 @@ How's the real-world performance?
 ---------------------------------
 
 I ran it through some real-world CSS files that have already been compressed,
-and usually get around 5% to 10% more compression out of it.
+and usually get around 5% to 25% more compression out of it.
 
 Example: https://gist.github.com/3583505
 
