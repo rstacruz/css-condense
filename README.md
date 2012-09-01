@@ -1,4 +1,4 @@
-# css_crunch
+# css-condense
 
 Compresses CSS, and isn't conservative about it.
 
@@ -9,7 +9,7 @@ Usage
 
 Or via NodeJS:
 
-    require('css-crunch').compress("div {color: red}")
+    require('css-condense').compress("div {color: red}")
 
 What it does
 ------------
