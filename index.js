@@ -315,7 +315,10 @@ function compress(str, options) {
     //- Naively strip whitespaces from commas and parentheses.
     //  Only do it if there's no quoted string in there.
     if ((val.indexOf("'") === -1) && (val.indexOf('"') === -1)) {
-      val = val.replace(/\s*([,\(\)])\s*/g, '$1');
+      val = val
+        .replace(/\s*,\s*/g, ',')
+        .replace(/(\(\s*)+/g, function(str) { return str.replace(/\s/g, ''); })
+        .replace(/(\s*\))+/g, function(str) { return str.replace(/\s/g, ''); });
     }
 
     //- Split the values according to quotes, etc.
