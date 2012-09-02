@@ -91,6 +91,7 @@ The dangerous things it does
 ----------------------------
 
 But that's not all! Here's where things get exciting!
+(Don't worry, you can turn these off with the `--safe` flag.)
 
 #### Consolidation via selectors
 
@@ -201,7 +202,7 @@ CssCondense.compress(str);
 But you'll risk breaking things!
 --------------------------------
 
-Well, yes. You want a safe approach? Go with [YUI 
+Well, yes. You want a safe approach? Use `--safe` or go with [YUI 
 Compressor](http://developer.yahoo.com/yui/compressor/).
 
 But hey, css-condense tries its best to make assumptions to ensure that no
