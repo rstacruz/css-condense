@@ -171,6 +171,8 @@ function compress(str, options) {
   // it and removes it from `context`/`i`.
 
   function consolidateViaDeclarations(rule, context, i, cache) {
+    if (options.consolidateViaDeclarations === false) return;
+
     consolidate('selectors', 'declarations', 'last', rule, context, i, cache);
     rule.selectors = sortSelectors(rule.selectors);
   };
@@ -179,6 +181,8 @@ function compress(str, options) {
   // Consolidate rules with same selectors. See `consalidateViaDeclarations` for description.
 
   function consolidateViaSelectors(rule, context, i, cache) {
+    if (options.consolidateViaSelectors === false) return;
+
     consolidate('declarations', 'selectors', 'last', rule, context, i, cache);
     rule.declarations = sortDeclarations(rule.declarations);
   };
@@ -187,6 +191,7 @@ function compress(str, options) {
   // Consolidate media queries
 
   function consolidateMediaQueries(rule, context, i, cache) {
+    if (options.consolidateMediaQueries === false) return;
     consolidate('rules', 'media', 'last', rule, context, i, cache);
   };
 
