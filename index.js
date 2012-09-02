@@ -54,6 +54,11 @@ function compress(str, options) {
       .replace(/\s*#x[0-9]+ie5machack{start:1}\s*/g, '/*\\*/')
       .replace(/\s*#x[0-9]+ie5machack{end:1}\s*/g, '/**/');
 
+    //- Add line breaks if you want.
+    if (options.lineBreaks === true) {
+      output = output.replace(/}/g, "}\n");
+    }
+
     //- Combine the bang comments with the stringified output.
     output = parts.comments.join("") + output;
 
