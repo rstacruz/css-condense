@@ -1,15 +1,47 @@
 #!/usr/bin/env node
 
 var compress = require('../index').compress;
+var fs = require('fs');
+var path = require('path');
+
+function version() {
+  var pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8'));
+  return pkg.version;
+}
+
+function getOptions() {
+  return require('commander')
+    .version("css-condense version "+version())
+    .usage("[<sourcefile ...>] [options]")
+    // .option("--no-consolidate-via-declarations", "Don't consolidate rules via declarations")
+    // .option("--no-consolidate-via-selectors", "Don't consolidate rules via selectors")
+    // .option("--no-consolidate-media-queries", "Don't consolidate media queries together")
+    // .option("--no-sort-selectors", "Don't sort selectors in a rule")
+    // .option("--no-sort-declarations", "Don't sort declarations in a rule")
+    // .option("--safe", "Don't do unsafe operations")
+    .on('--help', function() {
+      console.log("  All options are default to on, unless otherwise specified.");
+      console.log("  If <sourcefile> is not specified, read from stdin.");
+      console.log("");
+      console.log("  Examples:");
+      console.log("");
+      console.log("    $ cssc style.css > style.min.css");
+      console.log("    $ cat style.css | cssc > style.min.css");
+    });
+}
+
+var options = getOptions().parse(process.argv);
 
 var input;
-if (process.argv.length === 2) {
+if (options.args.length === 0) {
   var input = '';
   process.stdin.resume();
   process.stdin.on('data', function (chunk) { input += chunk; });
   process.stdin.on('end', function () { console.log(compress(input)); });
 } else {
-  fs = require('fs');
-  input = fs.readFileSync(process.argv[2], 'utf-8');
-  console.log(compress(input));
+  input = "";
+  options.args.forEach(function(fname) {
+    input += "\n" + fs.readFileSync(fname, 'utf-8');
+  });
+  console.log(compress(input, options));
 }

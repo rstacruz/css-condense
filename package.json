@@ -7,9 +7,6 @@
   "engines": {
     "node": ">=0.4.0"
   },
-  "directories": {
-    "lib": "./lib"
-  },
   "main": "./index.js",
   "bin": {
     "cssc": "./bin/cssc"
@@ -21,7 +18,8 @@
   },
   "dependencies": {
     "css-parse": ">= 1.0.2",
-    "css-stringify": ">= 1.0.2"
+    "css-stringify": ">= 1.0.2",
+    "commander": ">= 0.0.1"
   },
   "scripts": {
     "test": "make test"
