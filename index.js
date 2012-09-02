@@ -42,7 +42,12 @@ function compress(str, options) {
     transform(tree);
 
     //- Stringify using node-css-stringify.
-    var output = css.stringify(tree, { compress: true });
+    var output;
+    if (options.compress === false) {
+      output = css.stringify(tree).trim();
+    } else {
+      output = css.stringify(tree, { compress: true });
+    }
 
     //- Heh, replace back the sentinels we made
     output = output
