@@ -22,6 +22,8 @@ function getOptions() {
     .option("--line-breaks", "Add linebreaks")
     .option("-S, --safe", "Don't do unsafe operations")
     .on('--help', function() {
+      console.log("  The --safe switch turns off all consolidation behavior.");
+      console.log("");
       console.log("  If <sourcefile> is not specified, read from stdin.");
       console.log("  Examples:");
       console.log("");
