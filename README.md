@@ -143,6 +143,61 @@ Becomes:
 @media screen and (min-width:780px){div{width:100%}p{width:50%}}
 ```
 
+Command line usage
+------------------
+
+```
+  Usage: cssc [<sourcefile ...>] [options]
+
+  Options:
+
+    -h, --help                         output usage information
+    -V, --version                      output the version number
+    --no-consolidate-via-declarations  Don't consolidate rules via declarations
+    --no-consolidate-via-selectors     Don't consolidate rules via selectors
+    --no-consolidate-media-queries     Don't consolidate media queries together
+    --no-sort-selectors                Don't sort selectors in a rule
+    --no-sort-declarations             Don't sort declarations in a rule
+    --no-compress                      Don't strip whitespaces from output
+    --line-breaks                      Add linebreaks
+    -S, --safe                         Don't do unsafe operations
+
+  The --safe switch turns off all consolidation behavior.
+
+  If <sourcefile> is not specified, read from stdin.
+  Examples:
+
+    $ cssc style.css > style.min.css
+    $ cat style.css | cssc > style.min.css
+```
+
+Programatic usage
+-----------------
+
+You can use the `css-condense` NodeJS package, or you can use
+`dist/css-condense.js` for the browser.
+
+NodeJS:
+
+``` javascript
+var cssc = require('css-condense');
+var str = "div { color: blue; }";
+
+cssc.compress(str);
+cssc.compress(str, {
+  options: {
+    sortSelectors: false,
+    lineBreaks: true
+  }
+});
+```
+
+Or with `css-condense.js`:
+
+``` javascript
+CssCondense.compress(str);
+```
+
 But you'll risk breaking things!
 --------------------------------
 
