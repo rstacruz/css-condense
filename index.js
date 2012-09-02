@@ -376,7 +376,7 @@ function compress(str, options) {
     }
 
     //- Compress `#ff2288` to `#f28`. Also, lowercase all hex codes.
-    if (identifier.match(/^#[0-9a-f]+$/)) {
+    if (identifier.match(/^#[0-9a-f]+$/i)) {
       identifier = identifier.toLowerCase();
       if (identifier[1] === identifier[2] && identifier[3] === identifier[4] && identifier[5] === identifier[6]) {
         return '#' + identifier[1] + identifier[3] + identifier[5];
