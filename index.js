@@ -264,6 +264,11 @@ function compress(str, options) {
       return compressIdentifier(identifier, declaration.property);
     });
 
+    //- Consolidate 10px 10px 10px 10px -> 10px.
+    if ((declaration.property === 'margin') || (declaration.property === 'padding')) {
+      values = compressPadding(values);
+    }
+
     if (declaration.property === 'font-family') {
       val = values.join(',');
     } else {
@@ -323,6 +328,23 @@ function compress(str, options) {
     // Else, just return it.
     return identifier;
   };
+
+  // ### compressPadding
+  // Compresses padding values, eg, `10px 10px 10px 10px` => `10px`.
+
+  function compressPadding(values) {
+    //- Compress `10px 3px 10px 3px` => `10px 3px`.
+    if ((values.length === 4) && (values[0] === values[2]) && (values[1] === values[3])) {
+      values = [values[0], values[1]];
+    }
+
+    //- Compress `10px 10px` => `10px`.
+    if ((values.length === 2) && (values[0] === values[1])) {
+      values = [values[0]];
+    }
+
+    return values;
+  }
 
   // ### compressSelector
   // Compresses a selector string.

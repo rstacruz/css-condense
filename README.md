@@ -54,7 +54,8 @@ span { margin: 0px !important; }
 h1 { background: none; }
 a { padding: 0.30em; }
 p { font-family: "Lucida Grande", sans-serif; }
-abbr { background: url("tile.jpg") }
+abbr { background: url("tile.jpg"); }
+ul { padding: 30px 30px 30px 30px; }
 ```
 
 Can be: (newlines added for readability)
@@ -66,6 +67,7 @@ h1{background:0}
 a{padding:.3em}
 p{font-family: Lucida Grande,sans-serif}
 abbr{background:url(tile.jpg)}
+ul{padding:30px}
 ```
 
 #### Selector/declaration sorting
