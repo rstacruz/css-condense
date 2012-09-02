@@ -15,7 +15,7 @@ function compress(str, options) {
   if (options.safe === true) {
     options.consolidateMediaQueries = false;
     options.consolidateViaSelectors = false;
-    options.consolidateViaDefinitions = false;
+    options.consolidateViaDeclarations = false;
   }
 
   // Handle the `sort: false` preset.
