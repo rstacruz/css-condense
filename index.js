@@ -120,6 +120,16 @@ function compress(str, options) {
     return tree;
   }
 
+  // ### sortSelectors
+  // Sorts selectors.
+
+  function sortSelectors(selectors) {
+    if (options.sortSelectors === false) return selectors;
+    if (selectors.length <= 1) return selectors;
+
+    return selectors.sort();
+  }
+
   // ### sortDeclarations
   // Sorts a given list of declarations.
   //
@@ -132,6 +142,7 @@ function compress(str, options) {
   // -linear-gradient()` will have its order preserved.
 
   function sortDeclarations(declarations) {
+    if (options.sortDeclarations === false) return declarations;
     if (declarations.length <= 1) return declarations;
 
     declarations.forEach(function(decl, i) {
@@ -161,7 +172,7 @@ function compress(str, options) {
 
   function consolidateViaDeclarations(rule, context, i, cache) {
     consolidate('selectors', 'declarations', 'last', rule, context, i, cache);
-    rule.selectors = rule.selectors.sort();
+    rule.selectors = sortSelectors(rule.selectors);
   };
 
   // ### consolidateViaSelectors
@@ -235,7 +246,7 @@ function compress(str, options) {
 
     //- Compress its selectors.
     if (typeof rule.selectors !== 'undefined') {
-      rule.selectors = rule.selectors.map(compressSelector).sort();
+      rule.selectors = sortSelectors(rule.selectors.map(compressSelector));
     }
 
     //- Sort declarations.
