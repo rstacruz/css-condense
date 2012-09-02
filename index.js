@@ -413,8 +413,8 @@ function compress(str, options) {
   function compressSelector(selector) {
     var re = selector;
 
-    re = re.replace(/\s+/, ' ');
-    re = re.replace(/ ?([\+>~]) ?/, '$1');
+    re = re.replace(/\s+/g, ' ');
+    re = re.replace(/ ?([\+>~]) ?/g, '$1');
 
     return re;
 
