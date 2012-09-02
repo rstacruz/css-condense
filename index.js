@@ -314,6 +314,9 @@ function compress(str, options) {
     var self = this;
     var val;
 
+    //- Trim off whitespace in property.
+    declaration.property = declaration.property.trim();
+
     //- Split the values according to quotes, etc.
     var values = valueSplit(declaration.property, declaration.value);
 
@@ -331,6 +334,12 @@ function compress(str, options) {
       val = values.join(',');
     } else {
       val = values.join(' ');
+    }
+
+    //- Naively strip whitespaces from commas and parentheses.
+    //  Only do it if there's no quoted string in there.
+    if ((val.indexOf("'") === -1) && (val.indexOf('"') === -1)) {
+      val = val.replace(/\s*([,\(\)])\s*/, '$1');
     }
 
     //- Strip whitespace on important
