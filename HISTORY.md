@@ -1,3 +1,8 @@
+v0.0.4 - Sep 03, 2012
+---------------------
+
+  * Fix `--safe` not turning off consolidation properly.
+
 v0.0.3 - Sep 02, 2012
 ---------------------
 
