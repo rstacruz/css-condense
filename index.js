@@ -312,13 +312,19 @@ function compress(str, options) {
   */
   function compressDeclaration(declaration) {
     var self = this;
-    var val;
+    var val = declaration.value;
 
     //- Trim off whitespace in property.
     declaration.property = declaration.property.trim();
 
+    //- Naively strip whitespaces from commas and parentheses.
+    //  Only do it if there's no quoted string in there.
+    if ((val.indexOf("'") === -1) && (val.indexOf('"') === -1)) {
+      val = val.replace(/\s*([,\(\)])\s*/g, '$1');
+    }
+
     //- Split the values according to quotes, etc.
-    var values = valueSplit(declaration.property, declaration.value);
+    var values = valueSplit(declaration.property, val);
 
     //- Compress each of the values if possible
     values = values.map(function(identifier) {
@@ -334,12 +340,6 @@ function compress(str, options) {
       val = values.join(',');
     } else {
       val = values.join(' ');
-    }
-
-    //- Naively strip whitespaces from commas and parentheses.
-    //  Only do it if there's no quoted string in there.
-    if ((val.indexOf("'") === -1) && (val.indexOf('"') === -1)) {
-      val = val.replace(/\s*([,\(\)])\s*/g, '$1');
     }
 
     //- Strip whitespace on important
@@ -384,6 +384,10 @@ function compress(str, options) {
       }
     }
 
+    if (m = identifier.match(/^rgb\(([0-9]+),([0-9]+),([0-9]+)\)$/i)) {
+      identifier = rgbToHex([ m[1], m[2], m[3] ]);
+    }
+
     //- Compress `#ff2288` to `#f28`. Also, lowercase all hex codes.
     if (identifier.match(/^#[0-9a-f]+$/i)) {
       identifier = identifier.toLowerCase();
@@ -396,6 +400,18 @@ function compress(str, options) {
 
     // Else, just return it.
     return identifier;
+  };
+
+  function rgbToHex(rgb) {
+    rgb = rgb.map(function(num) {
+      //- "126" => "7e"
+      var str = parseInt(num).toString(16).toLowerCase();
+      if (str.length === 1) str = "0" + str;
+
+      return str;
+    });
+
+    return '#' + rgb.join("");
   };
 
   // ### compressPadding
