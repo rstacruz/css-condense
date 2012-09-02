@@ -223,6 +223,7 @@
   modules["css-condense"] = function() {
     var module = {};
     function compress(str, options) {
+      options || (options = {});
       var css = {
         parse: require("css-parse"),
         stringify: require("css-stringify")
@@ -231,6 +232,10 @@
         options.consolidateMediaQueries = false;
         options.consolidateViaSelectors = false;
         options.consolidateViaDefinitions = false;
+      }
+      if (options.sort === false) {
+        options.sortSelectors = false;
+        options.sortDeclarations = false;
       }
       return compressCode(str);
       function compressCode(str) {
@@ -243,10 +248,18 @@
         str = stripComments(str);
         var tree = css.parse(str);
         transform(tree);
-        var output = css.stringify(tree, {
-          compress: true
-        });
+        var output;
+        if (options.compress === false) {
+          output = css.stringify(tree).trim();
+        } else {
+          output = css.stringify(tree, {
+            compress: true
+          });
+        }
         output = output.replace(/\s*#x[0-9]+ie5machack{start:1}\s*/g, "/*\\*/").replace(/\s*#x[0-9]+ie5machack{end:1}\s*/g, "/**/");
+        if (options.lineBreaks === true) {
+          output = output.replace(/}/g, "}\n");
+        }
         output = parts.comments.join("") + output;
         return output;
       }
@@ -275,6 +288,7 @@
         tree.rules.forEach(function(rule, i) {
           if (typeof rule.declarations !== "undefined") {
             consolidateViaDeclarations(rule, tree.rules, i, valueCache);
+            rule.selectors = undupeSelectors(rule.selectors);
           }
           if (typeof rule.media !== "undefined") {
             rule = context(rule);
@@ -286,6 +300,16 @@
           }
         });
         return tree;
+      }
+      function undupeSelectors(selectors) {
+        var cache = {}, output = [];
+        selectors.forEach(function(selector) {
+          if (!cache[selector]) {
+            cache[selector] = true;
+            output.push(selector);
+          }
+        });
+        return output;
       }
       function sortSelectors(selectors) {
         if (options.sortSelectors === false) return selectors;
@@ -304,7 +328,7 @@
             if (m = prop.match(/^(\-[a-z]+\-|\*|_)(.*)$/)) {
               prop = m[2];
             }
-            return prop + "Z" + (1e3 + decl.index);
+            return prop + "-" + (1e3 + decl.index);
           }
           return toIndex(a) > toIndex(b) ? 1 : -1;
         });
