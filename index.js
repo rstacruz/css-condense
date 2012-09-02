@@ -319,7 +319,7 @@ function compress(str, options) {
 
     //- Compress each of the values if possible
     values = values.map(function(identifier) {
-      return compressIdentifier(identifier, declaration.property);
+      return compressIdentifier(identifier, declaration.property, values.length);
     });
 
     //- Consolidate 10px 10px 10px 10px -> 10px.
@@ -344,7 +344,7 @@ function compress(str, options) {
   // Compresses a given identifier.
   // Returns a string.
 
-  function compressIdentifier(identifier, property) {
+  function compressIdentifier(identifier, property, count) {
     var zeroableProperties = [
       'background', 'border', 'border-left', 'border-right', 'border-top', 'border-bottom',
       'outline', 'outline-left', 'outline-right', 'outline-top', 'outline-bottom'
@@ -352,7 +352,7 @@ function compress(str, options) {
 
     var m;
     //- Compress `none` to `0`.
-    if ((identifier === 'none') && (zeroableProperties.indexOf(property) > -1)) {
+    if ((identifier === 'none') && (zeroableProperties.indexOf(property) > -1) && (count === 1)) {
       return "0";
     }
 
