@@ -7,6 +7,8 @@
 //
 
 function compress(str, options) {
+  options || (options = {});
+
   var css = { parse: require('css-parse'), stringify: require('css-stringify') };
 
   // Handle the `safe` preset.
