@@ -345,12 +345,14 @@ function compress(str, options) {
   // Returns a string.
 
   function compressIdentifier(identifier, property) {
+    var zeroableProperties = [
+      'background', 'border', 'border-left', 'border-right', 'border-top', 'border-bottom',
+      'outline', 'outline-left', 'outline-right', 'outline-top', 'outline-bottom'
+    ];
+
     var m;
     //- Compress `none` to `0`.
-    if ((identifier === 'none') &&
-        ((property === 'background') ||
-         (property === 'border') ||
-         (property === 'outline'))) {
+    if ((identifier === 'none') && (zeroableProperties.indexOf(property) > -1)) {
       return "0";
     }
 
