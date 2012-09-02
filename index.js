@@ -127,6 +127,7 @@ function compress(str, options) {
       //  updated rules in Pass #2.
       if (typeof rule.declarations !== 'undefined') {
         consolidateViaDeclarations(rule, tree.rules, i, valueCache);
+        rule.selectors = undupeSelectors(rule.selectors);
       }
 
       //- Recurse through media queries.
@@ -143,6 +144,22 @@ function compress(str, options) {
     });
 
     return tree;
+  }
+
+  // ### undupeSelectors
+  // Removes duplicate selectors
+
+  function undupeSelectors(selectors) {
+    var cache = {}, output = [];
+
+    selectors.forEach(function(selector) {
+      if (!cache[selector]) {
+        cache[selector] = true;
+        output.push(selector);
+      }
+    });
+
+    return output;
   }
 
   // ### sortSelectors
