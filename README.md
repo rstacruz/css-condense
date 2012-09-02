@@ -148,6 +148,8 @@ Command line usage
 ------------------
 
 ```
+$ cssc --help
+
   Usage: cssc [<sourcefile ...>] [options]
 
   Options:
@@ -160,10 +162,12 @@ Command line usage
     --no-sort-selectors                Don't sort selectors in a rule
     --no-sort-declarations             Don't sort declarations in a rule
     --no-compress                      Don't strip whitespaces from output
+    --no-sort                          Turn off sorting
     --line-breaks                      Add linebreaks
     -S, --safe                         Don't do unsafe operations
 
-  The --safe switch turns off all consolidation behavior.
+  The --no-sort switch turns off all sorting (ie, it implies --no-sort-*).
+  The --safe switch turns off all consolidation behavior (ie, it implies --no-consolidate-*).
 
   If <sourcefile> is not specified, read from stdin.
   Examples:

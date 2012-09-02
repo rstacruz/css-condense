@@ -11,11 +11,17 @@ function compress(str, options) {
 
   var css = { parse: require('css-parse'), stringify: require('css-stringify') };
 
-  // Handle the `safe` preset.
+  // Handle the `safe: true` preset.
   if (options.safe === true) {
     options.consolidateMediaQueries = false;
     options.consolidateViaSelectors = false;
     options.consolidateViaDefinitions = false;
+  }
+
+  // Handle the `sort: false` preset.
+  if (options.sort === false) {
+    options.sortSelectors = false;
+    options.sortDeclarations = false;
   }
 
   return compressCode(str);

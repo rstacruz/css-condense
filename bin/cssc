@@ -19,10 +19,12 @@ function getOptions() {
     .option("--no-sort-selectors", "Don't sort selectors in a rule")
     .option("--no-sort-declarations", "Don't sort declarations in a rule")
     .option("--no-compress", "Don't strip whitespaces from output")
+    .option("--no-sort", "Turn off sorting")
     .option("--line-breaks", "Add linebreaks")
     .option("-S, --safe", "Don't do unsafe operations")
     .on('--help', function() {
-      console.log("  The --safe switch turns off all consolidation behavior.");
+      console.log("  The --no-sort switch turns off all sorting (ie, it implies --no-sort-*).");
+      console.log("  The --safe switch turns off all consolidation behavior (ie, it implies --no-consolidate-*).");
       console.log("");
       console.log("  If <sourcefile> is not specified, read from stdin.");
       console.log("  Examples:");
