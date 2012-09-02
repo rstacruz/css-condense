@@ -193,12 +193,7 @@ function compress(str, options) {
 
     return declarations.sort(function(a, b) {
       function toIndex(decl) {
-        var prop = decl.property;
-
-        if (m = prop.match(/^(\-[a-z]+\-|\*|_)(.*)$/)) { /* [1] */
-          prop = m[2];
-        }
-
+        var prop = unvendor(decl.property);
         return prop + "-" + (1000+decl.index); /* [2] */
       }
 
@@ -361,7 +356,7 @@ function compress(str, options) {
 
     var m;
     //- Compress `none` to `0`.
-    if ((identifier === 'none') && (zeroableProperties.indexOf(property) > -1) && (count === 1)) {
+    if ((identifier === 'none') && (zeroableProperties.indexOf(unvendor(property)) > -1) && (count === 1)) {
       return "0";
     }
 
@@ -401,6 +396,21 @@ function compress(str, options) {
     // Else, just return it.
     return identifier;
   };
+
+  // ### unvendor()
+  // Removes a vendor prefix from a property name.
+
+  function unvendor(prop) {
+    var m;
+    if (m = prop.match(/^(?:_|\*|-[a-z]+-)(.*)$/)) {
+      return m[1];
+    } else {
+      return prop;
+    }
+  }
+
+  // ### rgbToHex()
+  // Converts a rgb triplet `rgb` to a hex string.
 
   function rgbToHex(rgb) {
     rgb = rgb.map(function(num) {

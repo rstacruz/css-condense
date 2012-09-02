@@ -1,2 +1,3 @@
 div { background: none; }
 a { box-shadow: none; }
+span { -moz-outline: none; }
