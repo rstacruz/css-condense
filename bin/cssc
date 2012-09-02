@@ -18,7 +18,7 @@ function getOptions() {
     .option("--no-consolidate-media-queries", "Don't consolidate media queries together")
     .option("--no-sort-selectors", "Don't sort selectors in a rule")
     .option("--no-sort-declarations", "Don't sort declarations in a rule")
-    .option("--safe", "Don't do unsafe operations")
+    .option("-S, --safe", "Don't do unsafe operations")
     .on('--help', function() {
       console.log("  All options are default to on, unless otherwise specified.");
       console.log("  If <sourcefile> is not specified, read from stdin.");

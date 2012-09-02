@@ -9,6 +9,13 @@
 function compress(str, options) {
   var css = { parse: require('css-parse'), stringify: require('css-stringify') };
 
+  // Handle the `safe` preset.
+  if (options.safe === true) {
+    options.consolidateMediaQueries = false;
+    options.consolidateViaSelectors = false;
+    options.consolidateViaDefinitions = false;
+  }
+
   return compressCode(str);
 
   function compressCode(str) {
