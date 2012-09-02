@@ -362,7 +362,7 @@ function compress(str, options) {
     }
 
     //- Compress `0px` to `0`.
-    if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(em|px|%|in|cm|pt)$/)) {
+    if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(%|em|ex|in|cm|mm|pt|pc|px)$/)) {
       var num = m[1];
       var unit = m[2];
 
