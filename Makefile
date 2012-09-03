@@ -51,7 +51,7 @@ dist/css-condense.min.js: dist/css-condense.js
 clean:
 	rm -rf dist
 
-dist.commit:
+dist.commit: dist
 	git add dist
 	git commit -m "Update distribution." --author "Nobody <nobody@nadarei.co>"
 

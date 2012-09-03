@@ -231,7 +231,7 @@
       if (options.safe === true) {
         options.consolidateMediaQueries = false;
         options.consolidateViaSelectors = false;
-        options.consolidateViaDefinitions = false;
+        options.consolidateViaDeclarations = false;
       }
       if (options.sort === false) {
         options.sortSelectors = false;
@@ -324,10 +324,7 @@
         });
         return declarations.sort(function(a, b) {
           function toIndex(decl) {
-            var prop = decl.property;
-            if (m = prop.match(/^(\-[a-z]+\-|\*|_)(.*)$/)) {
-              prop = m[2];
-            }
+            var prop = unvendor(decl.property);
             return prop + "-" + (1e3 + decl.index);
           }
           return toIndex(a) > toIndex(b) ? 1 : -1;
@@ -384,10 +381,18 @@
       }
       function compressDeclaration(declaration) {
         var self = this;
-        var val;
-        var values = valueSplit(declaration.property, declaration.value);
+        var val = declaration.value;
+        declaration.property = declaration.property.trim();
+        if (val.indexOf("'") === -1 && val.indexOf('"') === -1) {
+          val = val.replace(/\s*,\s*/g, ",").replace(/(\(\s*)+/g, function(str) {
+            return str.replace(/\s/g, "");
+          }).replace(/(\s*\))+/g, function(str) {
+            return str.replace(/\s/g, "");
+          });
+        }
+        var values = valueSplit(declaration.property, val);
         values = values.map(function(identifier) {
-          return compressIdentifier(identifier, declaration.property);
+          return compressIdentifier(identifier, declaration.property, values.length);
         });
         if (declaration.property === "margin" || declaration.property === "padding") {
           values = compressPadding(values);
@@ -401,15 +406,16 @@
         declaration.value = val;
         return declaration;
       }
-      function compressIdentifier(identifier, property) {
+      function compressIdentifier(identifier, property, count) {
+        var zeroableProperties = [ "background", "border", "border-left", "border-right", "border-top", "border-bottom", "outline", "outline-left", "outline-right", "outline-top", "outline-bottom" ];
         var m;
-        if (identifier === "none" && (property === "background" || property === "border" || property === "outline")) {
+        if (identifier === "none" && zeroableProperties.indexOf(unvendor(property)) > -1 && count === 1) {
           return "0";
         }
         if (m = identifier.match(/^url\(["'](.*?)["']\)$/)) {
           return "url(" + m[1] + ")";
         }
-        if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(em|px|%|in|cm|pt)$/)) {
+        if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(%|em|ex|in|cm|mm|pt|pc|px)$/)) {
           var num = m[1];
           var unit = m[2];
           if (num.match(/^0*\.?0*$/)) {
@@ -420,7 +426,10 @@
             return num + unit;
           }
         }
-        if (identifier.match(/^#[0-9a-f]+$/)) {
+        if (m = identifier.match(/^rgb\(([0-9]+),([0-9]+),([0-9]+)\)$/i)) {
+          identifier = rgbToHex([ m[1], m[2], m[3] ]);
+        }
+        if (identifier.match(/^#[0-9a-f]+$/i)) {
           identifier = identifier.toLowerCase();
           if (identifier[1] === identifier[2] && identifier[3] === identifier[4] && identifier[5] === identifier[6]) {
             return "#" + identifier[1] + identifier[3] + identifier[5];
@@ -429,6 +438,22 @@
           }
         }
         return identifier;
+      }
+      function unvendor(prop) {
+        var m;
+        if (m = prop.match(/^(?:_|\*|-[a-z]+-)(.*)$/)) {
+          return m[1];
+        } else {
+          return prop;
+        }
+      }
+      function rgbToHex(rgb) {
+        rgb = rgb.map(function(num) {
+          var str = parseInt(num).toString(16).toLowerCase();
+          if (str.length === 1) str = "0" + str;
+          return str;
+        });
+        return "#" + rgb.join("");
       }
       function compressPadding(values) {
         if (values.length === 4 && values[0] === values[2] && values[1] === values[3]) {
@@ -441,8 +466,8 @@
       }
       function compressSelector(selector) {
         var re = selector;
-        re = re.replace(/\s+/, " ");
-        re = re.replace(/ ?([\+>~]) ?/, "$1");
+        re = re.replace(/\s+/g, " ");
+        re = re.replace(/ ?([\+>~]) ?/g, "$1");
         return re;
       }
       function valueSplit(prop, values) {
