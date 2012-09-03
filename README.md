@@ -50,24 +50,42 @@ Some identifiers, like pixel values or colors, can be trimmed to save on space.
 
 ``` css
 div { color: #ff0000; }
-span { margin: 0px !important; }
+span { margin: 1px !important; }
 h1 { background: none; }
 a { padding: 0.30em; }
-p { font-family: "Lucida Grande", sans-serif; }
+p { font-family: "Arial Black", sans-serif; }
 abbr { background: url("tile.jpg"); }
-ul { padding: 30px 30px 30px 30px; }
 ```
 
 Can be: (newlines added for readability)
 
 ``` css
-div{color:#f00}
-span{margin:0!important}
-h1{background:0}
-a{padding:.3em}
-p{font-family: Lucida Grande,sans-serif}
-abbr{background:url(tile.jpg)}
-ul{padding:30px}
+div{color:#f00}                           /* Collapsing 6-digit hex colors to 3 */
+span{margin:1px!important}                /* Strip space before !important */
+h1{background:0}                          /* Change border/background/outline 'none' to '0' */
+a{padding:.3em}                           /* Removing trailing zeroes from numbers */
+p{font-family: Arial Black,sans-serif}    /* Font family unquoting */
+abbr{background:url(tile.jpg)}            /* URL unquoting */
+```
+
+#### More compressions
+
+``` css
+ul { padding: 30px 30px 30px 30px; }
+li { margin: 0 auto 0 auto; }
+.zero { outline: 0px; }
+a + .b { color: blue; }
+.color { background: rgb(51,51,51); }
+```
+
+Output:
+
+``` css
+ul{padding:30px}                          /* Collapsing border/padding values */
+li{margin:0 auto}                         /* Same as above */,
+.zero{outline:0}                          /* Removing units from zeros */
+a+.b{color:blue}                          /* Collapse + and > in selectors */
+.color{background:#333}                   /* Converting rgb() values to hex */
 ```
 
 #### Selector/declaration sorting
