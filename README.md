@@ -187,7 +187,7 @@ $ cssc --help
   The --no-sort switch turns off all sorting (ie, it implies --no-sort-*).
   The --safe switch turns off all consolidation behavior (ie, it implies --no-consolidate-*).
 
-  If <sourcefile> is not specified, read from stdin.
+  If a <sourcefile> is not specified, input from stdin is read instead.
   Examples:
 
     $ cssc style.css > style.min.css

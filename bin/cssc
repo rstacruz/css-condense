@@ -26,7 +26,7 @@ function getOptions() {
       console.log("  The --no-sort switch turns off all sorting (ie, it implies --no-sort-*).");
       console.log("  The --safe switch turns off all consolidation behavior (ie, it implies --no-consolidate-*).");
       console.log("");
-      console.log("  If <sourcefile> is not specified, read from stdin.");
+      console.log("  If a <sourcefile> is not specified, input from stdin is read instead.");
       console.log("  Examples:");
       console.log("");
       console.log("    $ cssc style.css > style.min.css");
