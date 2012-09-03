@@ -190,10 +190,8 @@ var str = "div { color: blue; }";
 
 cssc.compress(str);
 cssc.compress(str, {
-  options: {
-    sortSelectors: false,
-    lineBreaks: true
-  }
+  sortSelectors: false,
+  lineBreaks: true
 });
 ```
 
