@@ -68,6 +68,9 @@ function compress(str, options) {
     //- Combine the bang comments with the stringified output.
     output = parts.comments.join("") + output;
 
+    //- Debug mode? Add comments at the beginning
+    output = "/* Transformed AST:\n" + JSON.stringify(tree, null, 2) + "\n*/\n";
+
     return output;
   }
 

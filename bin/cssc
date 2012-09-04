@@ -21,6 +21,7 @@ function getOptions() {
     .option("--no-compress", "Don't strip whitespaces from output")
     .option("--no-sort", "Turn off sorting")
     .option("--line-breaks", "Add linebreaks")
+    .option("--debug", "Debug mode")
     .option("-S, --safe", "Don't do unsafe operations")
     .on('--help', function() {
       console.log("  The --no-sort switch turns off all sorting (ie, it implies --no-sort-*).");
