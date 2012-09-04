@@ -57,12 +57,12 @@ function compress(str, options) {
 
     //- Heh, replace back the sentinels we made
     output = output
-      .replace(/\s*#x[0-9]+ie5machack{start:1}\s*/g, '/*\\*/')
-      .replace(/\s*#x[0-9]+ie5machack{end:1}\s*/g, '/**/');
+      .replace(/\s*#x[0-9]+ie5machack\{start:1\}\s*/g, '/*\\*/')
+      .replace(/\s*#x[0-9]+ie5machack\{end:1\}\s*/g, '/**/');
 
     //- Add line breaks if you want.
     if (options.lineBreaks === true) {
-      output = output.replace(/}/g, "}\n");
+      output = output.replace(/\}/g, "}\n");
     }
 
     //- Combine the bang comments with the stringified output.
@@ -76,7 +76,7 @@ function compress(str, options) {
 
   function transform(tree) {
     context(tree.stylesheet);
-  };
+  }
 
   // ### context
   // Transforms a given tree `context`. A `context` can usually be a media query
@@ -199,7 +199,7 @@ function compress(str, options) {
 
       return toIndex(a) > toIndex(b) ? 1 : -1;
     });
-  };
+  }
 
   // ### consolidateViaDeclarations
   // Consolidate rules with same definitions.
@@ -212,7 +212,7 @@ function compress(str, options) {
 
     consolidate('selectors', 'declarations', 'last', rule, context, i, cache);
     rule.selectors = sortSelectors(rule.selectors);
-  };
+  }
 
   // ### consolidateViaSelectors
   // Consolidate rules with same selectors. See `consalidateViaDeclarations` for description.
@@ -222,7 +222,7 @@ function compress(str, options) {
 
     consolidate('declarations', 'selectors', 'last', rule, context, i, cache);
     rule.declarations = sortDeclarations(rule.declarations);
-  };
+  }
 
   // ### consolidateMediaQueries
   // Consolidate media queries
@@ -230,7 +230,7 @@ function compress(str, options) {
   function consolidateMediaQueries(rule, context, i, cache) {
     if (options.consolidateMediaQueries === false) return;
     consolidate('rules', 'media', 'last', rule, context, i, cache);
-  };
+  }
 
   // ### consolidate
   // What the other consolidate thingies use.
@@ -259,7 +259,7 @@ function compress(str, options) {
       }
       cache[value] = { rule: rule, index: i };
     }
-  };
+  }
 
   // ### styleRule
   //
@@ -300,7 +300,7 @@ function compress(str, options) {
     });
 
     return rule;
-  };
+  }
 
   /*
     { property: 'color', value: '#ff0000' }
@@ -345,7 +345,7 @@ function compress(str, options) {
     declaration.value = val;
 
     return declaration;
-  };
+  }
 
   // ### compressIdentifier
   // Compresses a given identifier.
@@ -364,12 +364,15 @@ function compress(str, options) {
     }
 
     //- Remove quotes from urls.
-    if (m = identifier.match(/^url\(["'](.*?)["']\)$/)) {
+    m = identifier.match(/^url\(["'](.*?)["']\)$/);
+
+    if (m) {
       return "url(" + m[1] + ")";
     }
 
     //- Compress `0px` to `0`.
-    if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(%|em|ex|in|cm|mm|pt|pc|px)$/)) {
+    m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(%|em|ex|in|cm|mm|pt|pc|px)$/);
+    if (m) {
       var num = m[1];
       var unit = m[2];
 
@@ -382,7 +385,8 @@ function compress(str, options) {
       }
     }
 
-    if (m = identifier.match(/^rgb\(([0-9]+),([0-9]+),([0-9]+)\)$/i)) {
+    m = identifier.match(/^rgb\(([0-9]+),([0-9]+),([0-9]+)\)$/i);
+    if (m) {
       identifier = rgbToHex([ m[1], m[2], m[3] ]);
     }
 
@@ -398,14 +402,14 @@ function compress(str, options) {
 
     // Else, just return it.
     return identifier;
-  };
+  }
 
   // ### unvendor()
   // Removes a vendor prefix from a property name.
 
   function unvendor(prop) {
-    var m;
-    if (m = prop.match(/^(?:_|\*|-[a-z]+-)(.*)$/)) {
+    var m = prop.match(/^(?:_|\*|-[a-z]+-)(.*)$/);
+    if (m) {
       return m[1];
     } else {
       return prop;
@@ -418,14 +422,14 @@ function compress(str, options) {
   function rgbToHex(rgb) {
     rgb = rgb.map(function(num) {
       //- "126" => "7e"
-      var str = parseInt(num).toString(16).toLowerCase();
+      var str = parseInt(num, 10).toString(16).toLowerCase();
       if (str.length === 1) str = "0" + str;
 
       return str;
     });
 
     return '#' + rgb.join("");
-  };
+  }
 
   // ### compressPadding
   // Compresses padding values, eg, `10px 10px 10px 10px` => `10px`.
@@ -455,8 +459,7 @@ function compress(str, options) {
     re = re.replace(/ ?([\+>~]) ?/g, '$1');
 
     return re;
-
-  };
+  }
 
   // ### valueSplit
   // Split a value into an array. Takes a string `values`, along with the property name `prop`.
@@ -468,7 +471,7 @@ function compress(str, options) {
 
     //- Split accordingly. Fonts are parsed differently from others.
     if (prop === 'font-family') {
-      re = values.split(',')
+      re = values.split(',');
     } else {
       re = values.match(/"(?:\\"|.)*?"|'(?:\\'|.)*?'|[^ ]+/g);
     }
@@ -508,7 +511,7 @@ function compress(str, options) {
     });
     return { comments: comments, code: code };
   }
-};
+}
 
 module.exports = {
   compress: compress
