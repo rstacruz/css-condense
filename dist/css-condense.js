@@ -256,9 +256,9 @@
             compress: true
           });
         }
-        output = output.replace(/\s*#x[0-9]+ie5machack{start:1}\s*/g, "/*\\*/").replace(/\s*#x[0-9]+ie5machack{end:1}\s*/g, "/**/");
+        output = output.replace(/\s*#x[0-9]+ie5machack\{start:1\}\s*/g, "/*\\*/").replace(/\s*#x[0-9]+ie5machack\{end:1\}\s*/g, "/**/");
         if (options.lineBreaks === true) {
-          output = output.replace(/}/g, "}\n");
+          output = output.replace(/\}/g, "}\n");
         }
         output = parts.comments.join("") + output;
         return output;
@@ -266,34 +266,77 @@
       function transform(tree) {
         context(tree.stylesheet);
       }
+      function isStyleRule(rule) {
+        return typeof rule.declarations !== "undefined" && typeof rule.selectors !== "undefined" && rule.selectors[0] !== "@font-face";
+      }
+      function isMediaRule(rule) {
+        return typeof rule.media !== "undefined";
+      }
+      function isFontfaceRule(rule) {
+        return typeof rule.declarations !== "undefined" && typeof rule.selectors !== "undefined" && rule.selectors[0] === "@font-face";
+      }
+      function isKeyframesRule(rule) {
+        return typeof rule.keyframes !== "undefined";
+      }
+      function getFontName(rule) {
+        var output;
+        rule.declarations.forEach(function(declaration, i) {
+          if (!output && declaration.property.trim() === "font-family") {
+            output = declaration.value.trim();
+          }
+        });
+        return output;
+      }
       function context(tree) {
         var mediaCache = {};
         var valueCache = {};
         var selectorCache = {};
+        var parts = {
+          keyframes: [],
+          fonts: [],
+          other: []
+        };
+        var fonts = {};
         tree.rules.forEach(function(rule, i) {
-          if (typeof rule.media !== "undefined") {
+          if (isKeyframesRule(rule)) {
+            parts.keyframes.push(rule);
+          } else if (isFontfaceRule(rule)) {
+            var fontname = getFontName(rule);
+            if (fontname && !fonts[fontname]) {
+              parts.fonts.push(rule);
+              fonts[fontname] = true;
+            }
+          } else {
+            parts.other.push(rule);
+          }
+        });
+        tree.rules = parts.keyframes.concat(parts.fonts).concat(parts.other);
+        tree.rules.forEach(function(rule, i) {
+          if (isMediaRule(rule)) {
             consolidateMediaQueries(rule, tree.rules, i, mediaCache);
           }
-          if (typeof rule.declarations !== "undefined") {
+          if (isFontfaceRule(rule) || isStyleRule(rule)) {
             styleRule(rule, tree.rules, i);
+          }
+          if (isStyleRule(rule)) {
             consolidateViaDeclarations(rule, tree.rules, i, valueCache);
           }
         });
         tree.rules.forEach(function(rule, i) {
-          if (typeof rule.declarations !== "undefined") {
+          if (isStyleRule(rule)) {
             consolidateViaSelectors(rule, tree.rules, i, selectorCache);
           }
         });
         valueCache = {};
         tree.rules.forEach(function(rule, i) {
-          if (typeof rule.declarations !== "undefined") {
+          if (isStyleRule(rule)) {
             consolidateViaDeclarations(rule, tree.rules, i, valueCache);
             rule.selectors = undupeSelectors(rule.selectors);
           }
-          if (typeof rule.media !== "undefined") {
+          if (isMediaRule(rule)) {
             rule = context(rule);
           }
-          if (typeof rule.keyframes !== "undefined") {
+          if (isKeyframesRule(rule)) {
             rule.keyframes.forEach(function(keyframe, i) {
               styleRule(keyframe, rule.keyframes, i);
             });
@@ -370,7 +413,7 @@
           delete context[i];
           return;
         }
-        if (typeof rule.selectors !== "undefined") {
+        if (isStyleRule(rule)) {
           rule.selectors = sortSelectors(rule.selectors.map(compressSelector));
         }
         rule.declarations = sortDeclarations(rule.declarations);
@@ -412,10 +455,12 @@
         if (identifier === "none" && zeroableProperties.indexOf(unvendor(property)) > -1 && count === 1) {
           return "0";
         }
-        if (m = identifier.match(/^url\(["'](.*?)["']\)$/)) {
+        m = identifier.match(/^url\(["'](.*?)["']\)$/);
+        if (m) {
           return "url(" + m[1] + ")";
         }
-        if (m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(%|em|ex|in|cm|mm|pt|pc|px)$/)) {
+        m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(%|em|ex|in|cm|mm|pt|pc|px)$/);
+        if (m) {
           var num = m[1];
           var unit = m[2];
           if (num.match(/^0*\.?0*$/)) {
@@ -426,7 +471,8 @@
             return num + unit;
           }
         }
-        if (m = identifier.match(/^rgb\(([0-9]+),([0-9]+),([0-9]+)\)$/i)) {
+        m = identifier.match(/^rgb\(([0-9]+),([0-9]+),([0-9]+)\)$/i);
+        if (m) {
           identifier = rgbToHex([ m[1], m[2], m[3] ]);
         }
         if (identifier.match(/^#[0-9a-f]+$/i)) {
@@ -440,8 +486,8 @@
         return identifier;
       }
       function unvendor(prop) {
-        var m;
-        if (m = prop.match(/^(?:_|\*|-[a-z]+-)(.*)$/)) {
+        var m = prop.match(/^(?:_|\*|-[a-z]+-)(.*)$/);
+        if (m) {
           return m[1];
         } else {
           return prop;
@@ -449,7 +495,7 @@
       }
       function rgbToHex(rgb) {
         rgb = rgb.map(function(num) {
-          var str = parseInt(num).toString(16).toLowerCase();
+          var str = parseInt(num, 10).toString(16).toLowerCase();
           if (str.length === 1) str = "0" + str;
           return str;
         });
