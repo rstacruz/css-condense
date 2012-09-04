@@ -78,6 +78,23 @@ function compress(str, options) {
     context(tree.stylesheet);
   }
 
+  // ### isStyleRule
+  // Helper to check if a rule is a normal style rule.
+
+  function isStyleRule(rule) {
+    return ((typeof rule.declarations !== 'undefined') &&
+            (typeof rule.selectors !== 'undefined') &&
+            (rule.selectors[0] !== '@font-face'));
+  }
+
+  function isMediaRule(rule) {
+    return (typeof rule.media !== 'undefined');
+  }
+
+  function isKeyframesRule(rule) {
+    return (typeof rule.keyframes !== 'undefined');
+  }
+
   // ### context
   // Transforms a given tree `context`. A `context` can usually be a media query
   // definition, or a stylesheet itself.
@@ -94,15 +111,14 @@ function compress(str, options) {
     // __Pass #1__
 
     tree.rules.forEach(function(rule, i) {
-
       //- Consolidate media queries.
-      if (typeof rule.media !== 'undefined') {
+      if (isMediaRule(rule)) {
         consolidateMediaQueries(rule, tree.rules, i, mediaCache);
       }
 
       //- Compress selectors and declarations.
       //- Consolidate rules with same definitions.
-      if (typeof rule.declarations !== 'undefined') {
+      if (isStyleRule(rule)) {
         styleRule(rule, tree.rules, i);
         consolidateViaDeclarations(rule, tree.rules, i, valueCache);
       }
@@ -114,7 +130,7 @@ function compress(str, options) {
     tree.rules.forEach(function(rule, i) {
 
       //- Consolidate rules with same selectors.
-      if (typeof rule.declarations !== 'undefined') {
+      if (isStyleRule(rule)) {
         consolidateViaSelectors(rule, tree.rules, i, selectorCache);
       }
     });
@@ -125,18 +141,18 @@ function compress(str, options) {
     tree.rules.forEach(function(rule, i) {
       //- Consolidate rules with same definitions. Again, to account for the
       //  updated rules in Pass #2.
-      if (typeof rule.declarations !== 'undefined') {
+      if (isStyleRule(rule)) {
         consolidateViaDeclarations(rule, tree.rules, i, valueCache);
         rule.selectors = undupeSelectors(rule.selectors);
       }
 
       //- Recurse through media queries.
-      if (typeof rule.media !== 'undefined') {
+      if (isMediaRule(rule)) {
         rule = context(rule);
       }
 
       //- Recurse through at keyframes.
-      if (typeof rule.keyframes !== 'undefined') {
+      if (isKeyframesRule(rule)) {
         rule.keyframes.forEach(function(keyframe, i) {
           styleRule(keyframe, rule.keyframes, i);
         });
@@ -287,7 +303,7 @@ function compress(str, options) {
     }
 
     //- Compress its selectors.
-    if (typeof rule.selectors !== 'undefined') {
+    if (isStyleRule(rule)) {
       rule.selectors = sortSelectors(rule.selectors.map(compressSelector));
     }
 
