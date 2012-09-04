@@ -69,7 +69,9 @@ function compress(str, options) {
     output = parts.comments.join("") + output;
 
     //- Debug mode? Add comments at the beginning
-    output = "/* Transformed AST:\n" + JSON.stringify(tree, null, 2) + "\n*/\n";
+    if (options.debug) {
+      output = "/* Transformed AST:\n" + JSON.stringify(tree, null, 2) + "\n*/\n" + output;
+    }
 
     return output;
   }
@@ -104,6 +106,11 @@ function compress(str, options) {
     return (typeof rule.keyframes !== 'undefined');
   }
 
+  function isCharsetRule(rule) {
+    return (typeof rule.charset !== 'undefined');
+  }
+
+
   function getFontName(rule) {
     var output;
     rule.declarations.forEach(function(declaration, i) {
@@ -129,12 +136,14 @@ function compress(str, options) {
 
     // __Pass #0__
 
-    var parts = { keyframes: [], fonts: [], other: [] };
+    var parts = { charsets: [], keyframes: [], fonts: [], other: [] };
     var fonts = {};
 
     tree.rules.forEach(function(rule, i) {
       //- Sort everything into `parts`...
-      if (isKeyframesRule(rule)) {
+      if (isCharsetRule(rule)) {
+        parts.charsets = [rule];
+      } else if (isKeyframesRule(rule)) {
         parts.keyframes.push(rule);
       } else if (isFontfaceRule(rule)) {
         var fontname = getFontName(rule);
@@ -148,7 +157,7 @@ function compress(str, options) {
     });
 
     //- And put them back in this particular order.
-    tree.rules = parts.keyframes.concat(parts.fonts).concat(parts.other);
+    tree.rules = parts.charsets.concat(parts.keyframes).concat(parts.fonts).concat(parts.other);
 
     // __Pass #1__
 
