@@ -91,8 +91,24 @@ function compress(str, options) {
     return (typeof rule.media !== 'undefined');
   }
 
+  function isFontfaceRule(rule) {
+    return ((typeof rule.declarations !== 'undefined') &&
+            (typeof rule.selectors !== 'undefined') &&
+            (rule.selectors[0] === '@font-face'));
+  }
+
   function isKeyframesRule(rule) {
     return (typeof rule.keyframes !== 'undefined');
+  }
+
+  function getFontName(rule) {
+    var output;
+    rule.declarations.forEach(function(declaration, i) {
+      if ((!output) && (declaration.property.trim() === 'font-family')) {
+        output = declaration.value.trim();
+      }
+    });
+    return output;
   }
 
   // ### context
@@ -108,6 +124,29 @@ function compress(str, options) {
     var valueCache = {};
     var selectorCache = {};
 
+    // __Pass #0__
+
+    var parts = { keyframes: [], fonts: [], other: [] };
+    var fonts = {};
+
+    tree.rules.forEach(function(rule, i) {
+      //- Sort everything into `parts`...
+      if (isKeyframesRule(rule)) {
+        parts.keyframes.push(rule);
+      } else if (isFontfaceRule(rule)) {
+        var fontname = getFontName(rule);
+        if (fontname && !fonts[fontname]) {
+          parts.fonts.push(rule);
+          fonts[fontname] = true;
+        }
+      } else {
+        parts.other.push(rule);
+      }
+    });
+
+    //- And put them back in this particular order.
+    tree.rules = parts.keyframes.concat(parts.fonts).concat(parts.other);
+
     // __Pass #1__
 
     tree.rules.forEach(function(rule, i) {
@@ -116,19 +155,20 @@ function compress(str, options) {
         consolidateMediaQueries(rule, tree.rules, i, mediaCache);
       }
 
+      if (isFontfaceRule(rule) || isStyleRule(rule)) {
+        styleRule(rule, tree.rules, i);
+      }
+
       //- Compress selectors and declarations.
       //- Consolidate rules with same definitions.
       if (isStyleRule(rule)) {
-        styleRule(rule, tree.rules, i);
         consolidateViaDeclarations(rule, tree.rules, i, valueCache);
       }
-
     });
 
     // __Pass #2__
 
     tree.rules.forEach(function(rule, i) {
-
       //- Consolidate rules with same selectors.
       if (isStyleRule(rule)) {
         consolidateViaSelectors(rule, tree.rules, i, selectorCache);

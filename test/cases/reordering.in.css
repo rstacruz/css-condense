@@ -1,0 +1,3 @@
+div { color: blue; }
+@font-face { font-family: avenir; src: url(x); }
+@keyframes boo { 0% { color: blue; } }
