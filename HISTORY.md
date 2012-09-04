@@ -1,3 +1,19 @@
+v0.0.5 - Sep 05, 2012
+----------------------
+
+  * Fixed `@font-face` being consolidated wrong. [#2]
+  * Fixed wrongly compressing `background:none scroll` to `background:0 scroll`.
+  * Compress border-left (et al) none to 0.
+  * Compress rgb() to hex code syntax.
+  * Compress uppercase colors property (`#FFFFFF` => `#fff`).
+  * Handle parentheses in values more effectively.
+  * Improve selector compression.
+  * Support minifying identifiers with the `pc` and `ex` property.
+  * Trim off whitespaces in properties (`color : blue`).
+  * Strip whitespaces from commas and parentheses in values better.
+
+[#2]: https://github.com/rstacruz/css-condense/issues/2
+
 v0.0.4 - Sep 03, 2012
 ---------------------
 
