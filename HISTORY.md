@@ -1,5 +1,18 @@
+v0.0.6 - Nov 02, 2012
+---------------------
+
+### Fixed:
+  * font-face wrongly identifying duplicates.
+
+### Changed:
+  * Handle @charset.
+  * Implement --debug.
+  * Reorder the document to put keyframes and @font-faces on top.
+  * Update distribution.
+  * Update stringify.
+
 v0.0.5 - Sep 05, 2012
-----------------------
+---------------------
 
   * Fixed `@font-face` being consolidated wrong. [#2]
   * Fixed wrongly compressing `background:none scroll` to `background:0 scroll`.

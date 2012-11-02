@@ -3,7 +3,7 @@
   "description": "CSS compressor.",
   "keywords": ["css", "compress", "compression", "minify", "stylesheet"],
   "author": "Rico Sta. Cruz",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "node": ">=0.4.0"
   },
