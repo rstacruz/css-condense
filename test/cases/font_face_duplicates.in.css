@@ -1,0 +1,5 @@
+/* The declaration [2] should be removed because it's defining the
+ * same font as [1]. */
+@font-face { font-family: avenir; font-weight: bold; src: url('x'); } /* 1 */
+@font-face { font-family: avenir; font-weight: bold; src: url('y'); } /* 2 */
+@font-face { font-family: avenir; font-weight: normal; src: url('z'); }

@@ -111,14 +111,22 @@ function compress(str, options) {
   }
 
 
-  function getFontName(rule) {
-    var output;
-    rule.declarations.forEach(function(declaration, i) {
-      if ((!output) && (declaration.property.trim() === 'font-family')) {
-        output = declaration.value.trim();
-      }
-    });
-    return output;
+  function getFontID(rule) {
+    function get(key) {
+      var re;
+      rule.declarations.forEach(function(declaration, i) {
+        if (declaration.property.trim() === key) re = declaration.value.trim();
+      });
+      return re;
+    }
+
+    var id = [
+      (get('font-family') || ""),
+      (get('font-weight') || ""),
+      (get('font-style') || "")
+    ].join("");
+
+    return (id === "") ? null : id;
   }
 
   // ### context
@@ -146,7 +154,7 @@ function compress(str, options) {
       } else if (isKeyframesRule(rule)) {
         parts.keyframes.push(rule);
       } else if (isFontfaceRule(rule)) {
-        var fontname = getFontName(rule);
+        var fontname = getFontID(rule);
         if (fontname && !fonts[fontname]) {
           parts.fonts.push(rule);
           fonts[fontname] = true;
