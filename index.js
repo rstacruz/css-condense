@@ -548,6 +548,8 @@ function compress(str, options) {
   // Find CSS property declarations that have vendor prefixes that don't
   // match the given vendor prefix, and remove them.
   function filterDeclarationsByPrefix(context, prefix) {
+    if ((!prefix) || (prefix.length === 0)) return;
+
     var decls = [];
     context.declarations.forEach(function(decl, j) {
       if ((decl.property.substr(0, 1) !== '-') || (decl.property.substr(0, prefix.length) === prefix)) {
