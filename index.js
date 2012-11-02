@@ -170,6 +170,13 @@ function compress(str, options) {
     // __Pass #1__
 
     tree.rules.forEach(function(rule, i) {
+      //- Optimize keyframes.
+      if (isKeyframesRule(rule)) {
+        rule.keyframes.forEach(function(keyframe, i) {
+          filterDeclarationsByPrefix(keyframe, rule.vendor);
+        });
+      }
+
       //- Consolidate media queries.
       if (isMediaRule(rule)) {
         consolidateMediaQueries(rule, tree.rules, i, mediaCache);
@@ -536,6 +543,20 @@ function compress(str, options) {
 
     return re;
   }
+
+  // ### filterDeclarationsByPrefix()
+  // Find CSS property declarations that have vendor prefixes that don't
+  // match the given vendor prefix, and remove them.
+  function filterDeclarationsByPrefix(context, prefix) {
+    var decls = [];
+    context.declarations.forEach(function(decl, j) {
+      if ((decl.property.substr(0, 1) !== '-') || (decl.property.substr(0, prefix.length) === prefix)) {
+        decls.push(decl);
+      }
+    });
+    context.declarations = decls;
+  }
+
 
   // ### valueSplit
   // Split a value into an array. Takes a string `values`, along with the property name `prop`.
