@@ -88,6 +88,34 @@ a+.b{color:blue}                          /* Collapse + and > in selectors */
 .color{background:#333}                   /* Converting rgb() values to hex */
 ```
 
+#### Keyframe compressions
+
+css-condense will trim out any unneeded vendor prefixes from keyframes.
+
+``` css
+@-moz-keyframes twist {
+  0% {
+    -webkit-transform: rotate(30deg);
+    -moz-transform: rotate(30deg);
+    -o-transform: rotate(30deg);
+  }
+  100% {
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -o-transform: rotate(0);
+  }
+}
+```
+
+Output:
+
+``` css
+@-moz-keyframes twist{
+0%{-moz-transform:rotate(30deg)}
+100%{-moz-transform:rotate(0)}
+}
+```
+
 #### Selector/declaration sorting
 
 Each rule has its selectors and declarations sorted. This may not seem like it
