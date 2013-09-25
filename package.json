@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "css-parse": ">= 1.0.3",
-    "css-stringify": ">= 1.0.2",
+    "css-stringify": "1.0.2 - 1.2.0",
     "commander": ">= 0.0.1"
   },
   "scripts": {
