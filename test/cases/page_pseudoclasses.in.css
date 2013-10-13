@@ -1,0 +1,13 @@
+@page {
+  color: blue;
+  size: portrait
+}
+@page :first {
+  margin-top:1cm;
+}
+@page rotated {
+  size: landscape
+}
+table {
+  page: rotated;
+}
