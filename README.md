@@ -361,17 +361,14 @@ used to build the final output.
 [css-parse]: https://github.com/visionmedia/node-css-parse
 [css-stringify]: https://github.com/visionmedia/node-css-stringify
 
-© 2012, Rico Sta. Cruz. Released under the [MIT 
-License](http://www.opensource.org/licenses/mit-license.php).
+## Thanks
 
-**css-condense** is authored and maintained by [Rico Sta. Cruz][rsc] with help 
-from its [contributors][c]. It is sponsored by my startup, [Nadarei, Inc][nd].
+**css-condense** © 2012+, Rico Sta. Cruz. Released under the [MIT License].<br>
+Authored and maintained by Rico Sta. Cruz with help from [contributors].
 
- * [My website](http://ricostacruz.com) (ricostacruz.com)
- * [Nadarei, Inc.](http://nadarei.co) (nadarei.co)
- * [Github](http://github.com/rstacruz) (@rstacruz)
- * [Twitter](http://twitter.com/rstacruz) (@rstacruz)
+> [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
+> GitHub [@rstacruz](https://github.com/rstacruz) &nbsp;&middot;&nbsp;
+> Twitter [@rstacruz](https://twitter.com/rstacruz)
 
-[rsc]: http://ricostacruz.com
-[c]:   http://github.com/rstacruz/lidoc/contributors
-[nd]:  http://nadarei.co
+[MIT License]: http://mit-license.org/
+[contributors]: http://github.com/rstacruz/css-condense/contributors
