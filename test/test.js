@@ -13,7 +13,7 @@ files.forEach(function(file) {
   if (output != control) {
     console.log("==> FAIL: "+file);
     console.log("    expected:", control);
-    console.log("    actual:  ", output)
+    console.log("    actual:  ", output);
     failed += 1;
   }
 });
