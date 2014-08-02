@@ -1,8 +1,8 @@
 v0.1.0 - Aug 2, 2014
 --------------------
 
- * Update dependencies. Likely fixes many things. (css-parse and css-stringify 
-     ^2.0.0)
+ * Update dependencies. Likely fixes many things. (css-parse 1.1.0 and 
+     css-stringify 1.2.0)
 
 v0.0.6 - Nov 02, 2012
 ---------------------
