@@ -226,6 +226,9 @@ function compress(str, options) {
       }
     });
 
+    // filter removed rules
+    tree.rules = tree.rules.filter(function(rule) { return !!rule; });
+
     return tree;
   }
 
