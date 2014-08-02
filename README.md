@@ -3,6 +3,8 @@ css-condense
 
 Compresses CSS, and isn't conservative about it.
 
+[![Status](https://travis-ci.org/rstacruz/css-condense.svg?branch=master)](https://travis-ci.org/rstacruz/css-condense)  
+
 Installation
 ------------
 
@@ -20,6 +22,8 @@ Or via NodeJS:
 ``` js
 require('css-condense').compress("div {color: red}")
 ```
+
+[![npm version](https://badge.fury.io/js/css-condense.svg)](https://npmjs.org/package/css-condense "View this project on npm")
 
 What it does
 ------------
