@@ -17,9 +17,9 @@
     "url": "https://github.com/rstacruz/css-condense.git"
   },
   "dependencies": {
-    "css-parse": ">= 1.0.3 - 1.1.0",
-    "css-stringify": "1.0.2 - 1.2.0",
-    "commander": ">= 0.0.1"
+    "css-parse": "^2.0.0",
+    "css-stringify": "^2.0.0",
+    "commander": "^2.3.0"
   },
   "scripts": {
     "test": "make test"
