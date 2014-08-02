@@ -1,8 +1,14 @@
+v0.1.1 - Aug 2, 2014
+--------------------
+
+ * Fixes errors about undefined rules. (#8, @benjamine)
+
 v0.1.0 - Aug 2, 2014
 --------------------
 
- * Update dependencies. Likely fixes many things. (css-parse 1.1.0 and 
-     css-stringify 1.2.0)
+ * Update dependencies. Likely fixes many things. It now uses css-parse 1.1.0 
+  and css-stringify 1.2.0. (#6, @gbouthenot)
+ * Fixes bootstrap compatibility. (#5)
 
 v0.0.6 - Nov 02, 2012
 ---------------------
