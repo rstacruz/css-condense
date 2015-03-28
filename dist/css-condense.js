@@ -459,7 +459,7 @@
         if (m) {
           return "url(" + m[1] + ")";
         }
-        m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)?(%|em|ex|in|cm|mm|pt|pc|px)$/);
+        m = identifier.match(/^(\.?[0-9]+|[0-9]+\.[0-9]+)(%|em|ex|in|cm|mm|pt|pc|px)$/);
         if (m) {
           var num = m[1];
           var unit = m[2];
